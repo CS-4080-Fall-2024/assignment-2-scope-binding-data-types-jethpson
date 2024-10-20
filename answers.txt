@@ -1,0 +1,104 @@
+1. Using the grammar below, show a parse tree and a leftmost derivation for the following 
+statement: 
+                            A = B * (C * (A + B))
+                                / (assign.)= \
+                              ident.       expres.
+                               /              \
+                              A                *
+                                              / \
+                                           term factor
+                                        factor   |
+                                    identifier   |
+                                         /    expres.
+                                        /        \
+                                       B          *
+                                                 / \
+                                              term factor
+                                           factor    |
+                                       identifier    |
+                                            /     expres.
+                                           /         \
+                                          C          +
+                                                    / \
+                                                  term term
+                                                  /      \
+                                            identifier    \
+                                                /          |
+                                               A           B
+
+2. 
+
+a. Using Static Scope, what is printed to the screen?  
+ 
+Python Static
+
+u = 42
+v = 69
+w = 17
+
+def add(z):
+    global u, v
+    u = v + u + z
+
+def bar(fun):
+    global u
+    u = w
+    fun(v)
+
+def foo(x, w):
+    global v
+    v = x
+    bar(add)
+
+foo(u, 13)
+print(f"u: {u}")
+    
+    - 101
+
+b. Using Dynamic Scope with Deep Binding, what is printed to the screen?  
+
+  output  -  97
+
+  Deep binding uses the current values of variables from the calling context, which gives 
+  the correct result, while static binding uses the values from the 
+  context where the function was defined, which can lead to outdated or incorrect results.
+
+c. Using Dynamic Scope with Shallow Binding, what is printed to the screen?  
+ 
+Bash Example(Python had problems with shallow Binding):
+
+#!/bin/bash
+
+u=42
+v=69
+w=17
+z=0
+fun=0
+x=0
+
+add() {
+    z=$1
+    u=$((v + u + z))
+}
+
+bar() {
+    fun=$1
+    u=$w
+    "$fun" "$v"
+}
+
+foo() {
+    x=$1
+    w=$2
+    v=$x
+    bar add
+}
+
+# Call foo function with u and 13
+foo "$u" 13
+echo "u: $u"
+
+  output  -  97
+
+shallow binding gets the same answer as deep binding, but runs faster
+
